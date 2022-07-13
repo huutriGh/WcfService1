@@ -18,5 +18,8 @@ namespace BaseProject.Repository
         Task<T> Update(T entity);
         Task<List<T>> ListAsyncSpec(ISpecification<T> spec);
         Task<T> GetAsyncSpec(ISpecification<T> spec);
+        Task<List<T>> Get(Expression<Func<T, bool>> filter = null,
+                          Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                          params Expression<Func<T, object>>[] includeProperties);
     }
 }

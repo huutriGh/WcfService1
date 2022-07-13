@@ -67,6 +67,30 @@ namespace BaseProject.Repository
             var specificationResult = ApplySpecification(spec);
             return await specificationResult.FirstOrDefaultAsync();
         }
+
+        public Task<List<T>> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToListAsync();
+            }
+            else
+            {
+                return query.ToListAsync();
+            }
+        }
     }
 
     public class SpecificationEvaluator : ISpecificationEvaluator

@@ -23,6 +23,7 @@ using BaseProject.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace BaseProject
 {
@@ -64,7 +65,11 @@ namespace BaseProject
             });
             #endregion
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(x =>
+            {
+                x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
 
             #region Add Swagger
             services.AddSwaggerGen(c =>

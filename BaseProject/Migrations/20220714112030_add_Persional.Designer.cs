@@ -4,14 +4,16 @@ using BaseProject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BaseProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220714112030_add_Persional")]
+    partial class add_Persional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,21 +34,6 @@ namespace BaseProject.Migrations
                     b.HasKey("BlogId");
 
                     b.ToTable("Blogs");
-                });
-
-            modelBuilder.Entity("BaseProject.Models.Category", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CategoryName")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BaseProject.Models.JWT.RefreshToken", b =>
@@ -82,19 +69,6 @@ namespace BaseProject.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("BaseProject.Models.Persional", b =>
-                {
-                    b.Property<string>("PersionalId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PersionalName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PersionalId");
-
-                    b.ToTable("Persionals");
                 });
 
             modelBuilder.Entity("BaseProject.Models.Post", b =>
@@ -142,26 +116,6 @@ namespace BaseProject.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("BaseProject.Models.Service", b =>
-                {
-                    b.Property<int>("ServiceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ServiceName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ServiceId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("BaseProject.Models.TodoItem", b =>
@@ -378,21 +332,6 @@ namespace BaseProject.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("PersionalService", b =>
-                {
-                    b.Property<string>("PersionalsPersionalId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ServicesServiceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PersionalsPersionalId", "ServicesServiceId");
-
-                    b.HasIndex("ServicesServiceId");
-
-                    b.ToTable("PersionalService");
-                });
-
             modelBuilder.Entity("BaseProject.Models.JWT.RefreshToken", b =>
                 {
                     b.HasOne("BaseProject.Models.User.User", "User")
@@ -411,15 +350,6 @@ namespace BaseProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Blog");
-                });
-
-            modelBuilder.Entity("BaseProject.Models.Service", b =>
-                {
-                    b.HasOne("BaseProject.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -469,21 +399,6 @@ namespace BaseProject.Migrations
                     b.HasOne("BaseProject.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PersionalService", b =>
-                {
-                    b.HasOne("BaseProject.Models.Persional", null)
-                        .WithMany()
-                        .HasForeignKey("PersionalsPersionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BaseProject.Models.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServicesServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

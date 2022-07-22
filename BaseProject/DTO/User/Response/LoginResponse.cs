@@ -14,7 +14,7 @@ namespace BaseProject.DTO.User.Response
         public string Token { get; set; }
        
 
-        public string RequestToken { get; set; }
+        public string RefreshToken { get; set; }
 
         public IEnumerable<string> UserRoles { get; set; }
     }

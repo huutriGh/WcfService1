@@ -15,6 +15,10 @@ namespace BaseProject
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Persional> Persionals { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Service> Services { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

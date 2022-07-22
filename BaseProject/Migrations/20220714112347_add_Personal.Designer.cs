@@ -4,14 +4,16 @@ using BaseProject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BaseProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220714112347_add_Personal")]
+    partial class add_Personal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,9 +94,26 @@ namespace BaseProject.Migrations
                     b.Property<string>("PersionalName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PersionalServiceId")
+                        .HasColumnType("int");
+
                     b.HasKey("PersionalId");
 
+                    b.HasIndex("PersionalServiceId");
+
                     b.ToTable("Persionals");
+                });
+
+            modelBuilder.Entity("BaseProject.Models.PersionalService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PersionalServices");
                 });
 
             modelBuilder.Entity("BaseProject.Models.Post", b =>
@@ -154,12 +173,17 @@ namespace BaseProject.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PersionalServiceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ServiceName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ServiceId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("PersionalServiceId");
 
                     b.ToTable("Services");
                 });
@@ -378,21 +402,6 @@ namespace BaseProject.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("PersionalService", b =>
-                {
-                    b.Property<string>("PersionalsPersionalId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ServicesServiceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PersionalsPersionalId", "ServicesServiceId");
-
-                    b.HasIndex("ServicesServiceId");
-
-                    b.ToTable("PersionalService");
-                });
-
             modelBuilder.Entity("BaseProject.Models.JWT.RefreshToken", b =>
                 {
                     b.HasOne("BaseProject.Models.User.User", "User")
@@ -400,6 +409,13 @@ namespace BaseProject.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BaseProject.Models.Persional", b =>
+                {
+                    b.HasOne("BaseProject.Models.PersionalService", null)
+                        .WithMany("Persionals")
+                        .HasForeignKey("PersionalServiceId");
                 });
 
             modelBuilder.Entity("BaseProject.Models.Post", b =>
@@ -418,6 +434,10 @@ namespace BaseProject.Migrations
                     b.HasOne("BaseProject.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
+
+                    b.HasOne("BaseProject.Models.PersionalService", null)
+                        .WithMany("Service")
+                        .HasForeignKey("PersionalServiceId");
 
                     b.Navigation("Category");
                 });
@@ -473,24 +493,16 @@ namespace BaseProject.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PersionalService", b =>
-                {
-                    b.HasOne("BaseProject.Models.Persional", null)
-                        .WithMany()
-                        .HasForeignKey("PersionalsPersionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BaseProject.Models.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServicesServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BaseProject.Models.Blog", b =>
                 {
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("BaseProject.Models.PersionalService", b =>
+                {
+                    b.Navigation("Persionals");
+
+                    b.Navigation("Service");
                 });
 #pragma warning restore 612, 618
         }

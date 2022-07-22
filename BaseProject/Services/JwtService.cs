@@ -55,7 +55,7 @@ namespace BaseProject.Services
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 
                 }),
-                Expires = utcNow.AddHours(_jwtConfig.ExpiredInHours), // 5-10 
+                Expires = utcNow.AddMinutes(_jwtConfig.ExpiredInHours), // 5-10 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
 
             };
@@ -87,7 +87,7 @@ namespace BaseProject.Services
             {
                 UserName = user.UserName,
                 Token = jwtToken,
-                RequestToken = refreshToken.Token,
+                RefreshToken = refreshToken.Token,
                 UserRoles = roles.ToList()
             };
 

@@ -59,7 +59,7 @@ namespace BaseProject
                                   {
                                       builder.AllowAnyHeader()
             .AllowAnyMethod()
-            .WithOrigins("http://localhost:3000")
+            .SetIsOriginAllowed(origin=>true)
             .AllowCredentials();
                                   });
             });
@@ -127,6 +127,11 @@ namespace BaseProject
             {
                 jwt.SaveToken = true;
                 jwt.TokenValidationParameters = tokenValidationParams;
+            });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ElevatedRights", policy => policy.RequireRole("Administrator", "PowerUser", "BackupAdministrator"));
+                options.AddPolicy("UserRights", policy => policy.RequireRole("GUEST", "USER"));
             });
             #endregion
 

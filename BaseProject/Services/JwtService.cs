@@ -44,7 +44,7 @@ namespace BaseProject.Services
             var utcNow = DateTime.UtcNow;
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
-
+            var userRoles = await _userManager.GetRolesAsync(user);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -59,8 +59,8 @@ namespace BaseProject.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
 
             };
-            
-            //user.UserRoles.ToList().ForEach(u => { tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, u.Role.Name)); });
+
+            userRoles.ToList().ForEach(u => { tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, u)); });
 
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = jwtTokenHandler.WriteToken(token);

@@ -29,7 +29,7 @@ namespace BaseProject.Controllers
             _repository = repository;
         }
 
-        [Authorize]
+        [Authorize(Policy = "UserRights")]
         [HttpPost]
         [Route("UploadFlie")]
         [SwaggerOperation(

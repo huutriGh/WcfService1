@@ -153,6 +153,11 @@ namespace BaseProject
             app.UseCors(AllowSpecificOrigins);
             app.UseAuthentication();
             app.UseAuthorization();
+
+            if (!Directory.Exists(Path.Combine(env.ContentRootPath, "Images")))
+            {
+                Directory.CreateDirectory(Path.Combine(env.ContentRootPath, "Images"));
+            }
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Images")),
